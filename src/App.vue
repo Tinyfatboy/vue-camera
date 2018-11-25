@@ -1,31 +1,69 @@
 <template>
   <div id="app">
-    <div id="nav">
+    <header>
+      <div class="logo">{{ logo }}</div>
+    </header>
+    <!-- <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+    </div> -->
+    <!-- <router-view/> -->
+    <signup/>
+    <footer></footer>
   </div>
 </template>
+
+<script>
+import signup from '@/views/signup.vue'
+
+export default {
+  components: {
+    signup
+  },
+  data(){
+    return{
+      logo: "培训机构logo"
+    }
+  }
+}
+</script>
+
 
 <style>
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  position: relative;
+  height: 100%;
+}
+
+header, footer{
+    height: 102px;
+    background: #666666;
+}
+
+header{
+  position: relative;
+}
+
+footer{
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+}
+
+.logo{
+  display: inline-block;
+  width: 158px;
+  height: 72px;
+  background: #f2f2f2;
+  font-size: 20px;
   text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+  line-height: 72px;
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  transform: translateY(-50%)
 }
 </style>

@@ -2,8 +2,17 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import axios from 'axios';
+import VueAxios from 'vue-axios';
+import {VTable} from 'vue-easytable'
+import 'normalize.css';
+import "./assets/css/common.css"
+import 'vue-easytable/libs/themes-base/index.css'
 
 Vue.config.productionTip = false
+
+Vue.use(VueAxios, axios)
+Vue.component(VTable.name, VTable)
 
 new Vue({
   router,
