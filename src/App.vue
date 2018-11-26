@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <header>
-      <div class="logo">{{ logo }}</div>
+      <div class="logo" @click="showFullscreen">{{ logo }}</div>
     </header>
     <!-- <div id="nav">
       <router-link to="/">Home</router-link> |
@@ -14,46 +14,53 @@
 </template>
 
 <script>
-import signup from '@/views/signup.vue'
+import signup from "@/views/signup.vue";
 
 export default {
   components: {
     signup
   },
-  data(){
-    return{
+  data() {
+    return {
       logo: "培训机构logo"
+    };
+  },
+  methods: {
+    showFullscreen() {
+      let element = document.documentElement;
+      element.webkitRequestFullscreen();
     }
   }
-}
+};
 </script>
 
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   position: relative;
   height: 100%;
 }
 
-header, footer{
-    height: 102px;
-    background: #666666;
+header,
+footer {
+  height: 102px;
+  background: #666666;
 }
 
-header{
+header {
   position: relative;
 }
 
-footer{
+footer {
   position: absolute;
   width: 100%;
   bottom: 0;
 }
 
-.logo{
+.logo {
   display: inline-block;
   width: 158px;
   height: 72px;
@@ -64,6 +71,6 @@ footer{
   position: absolute;
   top: 50%;
   left: 20px;
-  transform: translateY(-50%)
+  transform: translateY(-50%);
 }
 </style>

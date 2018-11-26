@@ -27,5 +27,29 @@ export default {
       u8arr[n] = bstr.charCodeAt(n);
     }
     return new Blob([u8arr], { type: mime });
+  },
+
+  getDate() {
+    let time = new Date()
+
+    let year = time.getFullYear()
+    let month = time.getMonth() + 1
+    let date = time.getDate()
+    let day = time.getDay()
+
+    return {year, month, date, day}
+  },
+
+  getTime() {
+    let time = new Date()
+
+    let hour = time.getHours()
+    let minute = time.getMinutes()
+    let second = time.getSeconds()
+    if (hour > 12) {
+      hour = hour - 12
+    }
+    
+    return {hour, minute, second}
   }
 }

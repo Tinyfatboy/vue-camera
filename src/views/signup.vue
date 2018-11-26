@@ -2,7 +2,10 @@
   <div class="signup">
     <section class="info">
       <sys-clock></sys-clock>
-      <!-- <common-table></common-table> -->
+      <div class="table">
+        <div class="tableTitle">{{ classTitle }}</div>
+        <common-table></common-table>
+      </div>
     </section>
     <section class="introduction">
       <div class="banner">{{ banner }}</div>
@@ -20,12 +23,12 @@
 
 <script>
 import api from "../common/api.js";
-import sysClock from "@/components/sys-clock.vue"
-import commonTable from "@/components/common-table.vue"
+import sysClock from "@/components/sys-clock.vue";
+import commonTable from "@/components/common-table.vue";
 
 export default {
   name: "signup",
-  components:{
+  components: {
     sysClock,
     commonTable
   },
@@ -38,35 +41,41 @@ export default {
               Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci. sed rhoncus pronin
               sapien nunc accuan eget.`,
       img: [
-          {url: "https://via.placeholder.com/230"},
-          {url: "https://via.placeholder.com/230"},
-          {url: "https://via.placeholder.com/230"}
-        ]
+        { url: "https://via.placeholder.com/230" },
+        { url: "https://via.placeholder.com/230" },
+        { url: "https://via.placeholder.com/230" }
+      ],
+      classTitle: "课程表"
     };
   },
-  methods: {
-  },
-  mounted() {
-  }
+  methods: {},
+  mounted() {}
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.info{
+.info {
   height: 472px;
   width: 724px;
   margin-left: auto;
   margin-right: auto;
   margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
 }
 
-.introduction{
+.table {
+  width: 450px;
+}
+
+.introduction {
   width: 724px;
   margin: 0 auto;
 }
 
-.banner{
+.banner,
+.tableTitle {
   background: #999999;
   height: 52px;
   text-align: center;
@@ -76,16 +85,20 @@ export default {
   margin-bottom: 10px;
 }
 
-.description > p{
+.tableTitle{
+  margin-bottom: 0px;
+}
+
+.description > p {
   font-size: 18px;
   line-height: 23px;
 }
 
-.description > p:last-child{
+.description > p:last-child {
   margin-bottom: 20px;
 }
 
-.slide{
+.slide {
   display: flex;
   justify-content: space-between;
   align-items: center;
