@@ -1,7 +1,7 @@
 <template>
   <div class="selectArea">
     <input type="number" pattern="[0-9]*" name="featureNo" :placeholder="placeholder">
-    <div class="tabButton">{{ buttonText }}</div>
+    <div class="tabButton" @click="backToSign">{{ buttonText }}</div>
   </div>
 </template>
 
@@ -14,7 +14,11 @@ export default {
       buttonText: "签到"
     };
   },
-  methods: {},
+  methods: {
+    backToSign(){
+      this.$router.push('/signup')
+    }
+  },
   mounted() {}
 };
 </script>
