@@ -7,7 +7,7 @@ export default {
   data() {
     return {
       TRHeight: 38,
-      RHeight: 60,
+      RHeight: 58,
       tableData: [
         {
           class: "少儿跆拳道精英课",

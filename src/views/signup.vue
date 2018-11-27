@@ -5,6 +5,7 @@
       <div class="table">
         <div class="tableTitle">{{ classTitle }}</div>
         <common-table></common-table>
+        <div class="tabButton signButton">{{ buttonText }}</div>
       </div>
     </section>
     <section class="introduction">
@@ -35,6 +36,7 @@ export default {
   data() {
     return {
       banner: "机构介绍",
+      buttonText: "手动签到",
       intro: `Lorem ipsum dolor sit amet consectetur adipiscing elit. Aenean euismod bibendum laoreet.
               Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar
               sic tempor. Socis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
@@ -56,17 +58,25 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .info {
-  height: 472px;
+  height: 442px;
   width: 724px;
   margin-left: auto;
   margin-right: auto;
   margin-top: 20px;
+  margin-bottom: 30px;
   display: flex;
   justify-content: space-between;
 }
 
 .table {
   width: 450px;
+  position: relative;
+}
+
+.signButton {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
 }
 
 .introduction {
@@ -85,7 +95,7 @@ export default {
   margin-bottom: 10px;
 }
 
-.tableTitle{
+.tableTitle {
   margin-bottom: 0px;
 }
 

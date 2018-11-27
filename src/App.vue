@@ -65,7 +65,7 @@ footer {
   width: 158px;
   height: 72px;
   background: #f2f2f2;
-  font-size: 20px;
+  font-size: 18px;
   text-align: center;
   line-height: 72px;
   position: absolute;
