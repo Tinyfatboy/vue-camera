@@ -17,6 +17,10 @@ export default {
     })
   },
 
+  getClassTime() {
+    return axios.post('class/time')
+  },
+
   base64toImage(string) {
     var arr = string.split(',');
     var mime = arr[0].match(/:(.*?);/)[1];
@@ -37,7 +41,7 @@ export default {
     let date = time.getDate()
     let day = time.getDay()
 
-    return {year, month, date, day}
+    return { year, month, date, day }
   },
 
   getTime() {
@@ -49,7 +53,7 @@ export default {
     if (hour > 12) {
       hour = hour - 12
     }
-    
-    return {hour, minute, second}
+
+    return { hour, minute, second }
   }
 }

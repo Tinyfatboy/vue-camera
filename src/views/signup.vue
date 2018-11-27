@@ -5,7 +5,7 @@
       <div class="table">
         <div class="tableTitle">{{ classTitle }}</div>
         <common-table></common-table>
-        <div class="tabButton signButton">{{ buttonText }}</div>
+        <div class="tabButton signButton" @click="goToSelect">{{ buttonText }}</div>
       </div>
     </section>
     <section class="introduction">
@@ -50,7 +50,11 @@ export default {
       classTitle: "课程表"
     };
   },
-  methods: {},
+  methods: {
+    goToSelect(){
+      this.$router.push('/select')
+    }
+  },
   mounted() {}
 };
 </script>
