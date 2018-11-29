@@ -17,8 +17,12 @@ export default {
     })
   },
 
-  getClassTime() {
-    return axios.post('class/time')
+  getInfo() {
+    return axios.post('ins_index')
+  },
+
+  download(data) {
+    return axios.post('face/download', data)
   },
 
   base64toImage(string) {

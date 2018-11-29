@@ -2,14 +2,20 @@
   <div class="reg">
     <div class="cam-video">
       <h1>{{ msg1 }}</h1>
-      <video id="video" width="640" height="480" autoplay></video>
+      <video id="video" width="640" height="360" autoplay></video>
     </div>
-    <div class="button-area">
-      <button @click="snapshot">{{ msg3 }}</button>
+    <div class="function-area">
+      <form>
+        <label for="featureNo">featureNo</label>
+        <input type="number" pattern="[0-9]*" name="featureNumber" :placeholder="placeholder1" v-model="featureNo">
+        <br>
+        <label for="featureType">featureType</label>
+        <input type="number" pattern="[0-9]*" name="featureType" :placeholder="placeholder2" v-model="featureType">
+      </form>
+      <div class="tabButton" @click="snapshot">{{ buttonText }}</div>
     </div>
-    <div class="sanpshot">
-      <h1>{{ msg2 }}</h1>
-      <canvas id="canvas" width="640" height="480"></canvas>
+    <div class="canvas-area">
+      <canvas id="canvas" width="1280" height="720"></canvas>
     </div>
   </div>
 </template>
@@ -28,10 +34,12 @@ export default {
   name: "register",
   data() {
     return {
-      a: {},
-      msg1: "video from camera",
-      msg2: "shot by user",
-      msg3: "snap-shot"
+      msg1: "请对准摄像头",
+      placeholder1: "请输入您的学号",
+      placeholder2: "请输入学员类型",
+      buttonText: "采集信息",
+      featureNo: "",
+      featureType: ""
     };
   },
   methods: {
@@ -43,33 +51,20 @@ export default {
       ctx.drawImage(video, 0, 0);
 
       let image = canvas.toDataURL("image/jpg");
-      // image = image.split(",")[1];
 
       let blob = api.base64toImage(image);
-      let url = window.URL.createObjectURL(blob);
-      let link = document.createElement("a");
-      link.style.display = "none";
-      link.href = url;
-      link.setAttribute("download", Date.now() + ".jpg");
-
-      document.body.appendChild(link);
-      link.click();
-      window.URL.revokeObjectURL(url);
-
       let formdata = new FormData();
-      formdata.append("imagefile", blob, Date.now() + ".jpg");
-      formdata.append("uid ", "10");
-      formdata.append("ugroup", "1");
-      console.log(formdata);
 
-      api
-        .register(formdata)
-        .then(response => {
-          console.log(response);
-        })
-        .catch(error => {
-          console.log(error);
-        });
+      formdata.append("imagefile", blob, Date.now() + ".jpg");
+
+      // api
+      //   .register(formdata)
+      //   .then(response => {
+      //     console.log(response);
+      //   })
+      //   .catch(error => {
+      //     console.log(error);
+      //   });
     }
   },
   mounted() {
@@ -91,29 +86,58 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-video,
-canvas {
-  border: 1px solid slategray;
+h1 {
+  text-align: center;
 }
 
-button {
-  padding: 8px;
-  border-radius: 12px;
-  background: #000;
-  background-color: #428bca;
-  border: 1px solid transparent;
-  color: #fff;
-  font-size: 16px;
-  vertical-align: middle;
+video {
+  border: 1px solid #666666;
 }
 
-.main {
+.cam-video {
+  margin-bottom: 50px;
+}
+
+.function-area {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-.button-area {
+label {
   width: 150px;
+  font-size: 24px;
+  display: inline-block;
+}
+
+input {
+  border: 2px solid #cacaca;
+  outline: none;
+  text-align: center;
+  height: 52px;
+  width: 300px;
+  font-size: 24px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+}
+
+input[name="featureNumber"] {
+  margin-bottom: 30px;
+}
+
+form {
+  margin-bottom: 50px;
+}
+
+.reg {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.canvas-area {
+  display: none;
 }
 </style>

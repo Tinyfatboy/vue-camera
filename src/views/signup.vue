@@ -11,19 +11,24 @@
     <section class="introduction">
       <div class="banner">{{ banner }}</div>
       <div class="description">
-        <p>{{intro}}</p>
-        <p>{{intro}}</p>
-        <p>{{intro}}</p>
+        <p v-for="(item, index) in intro" :key="index">
+          {{ item }}
+          <br v-if="item === ''">
+        </p>
       </div>
-      <div class="slide">
+      <!-- <div class="slide">
         <img v-for="(item, index) in img" :key="index" :src="item.url" alt="">
-      </div>
+      </div> -->
     </section>
+    <el-dialog title="签到信息" :visible.sync="dialogVisible" width="80%" top="299px" center>
+      <div class="signDialog">
+        {{ signInfo }}
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import api from "../common/api.js";
 import sysClock from "@/components/sys-clock.vue";
 import commonTable from "@/components/common-table.vue";
 
@@ -37,25 +42,32 @@ export default {
     return {
       banner: "机构介绍",
       buttonText: "手动签到",
-      intro: `Lorem ipsum dolor sit amet consectetur adipiscing elit. Aenean euismod bibendum laoreet.
-              Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar
-              sic tempor. Socis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-              Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci. sed rhoncus pronin
-              sapien nunc accuan eget.`,
       img: [
         { url: "https://via.placeholder.com/230" },
         { url: "https://via.placeholder.com/230" },
         { url: "https://via.placeholder.com/230" }
       ],
-      classTitle: "课程表"
+      classTitle: "课程表",
+      dialogVisible: false,
+      signInfo: "签到成功"
     };
   },
-  methods: {
-    goToSelect(){
-      this.$router.push('/select')
+  computed: {
+    intro() {
+      return this.$store.getters.desc.slice(0, 22);
     }
   },
-  mounted() {}
+  methods: {
+    goToSelect() {
+      this.$router.push("/selectNo");
+    },
+    signIn() {}
+  },
+  mounted() {
+    setTimeout(() => {
+      this.dialogVisible = true;
+    }, 3000);
+  }
 };
 </script>
 
@@ -73,7 +85,7 @@ export default {
 }
 
 .table {
-  width: 450px;
+  width: 452px;
   position: relative;
 }
 
@@ -104,8 +116,8 @@ export default {
 }
 
 .description > p {
-  font-size: 18px;
-  line-height: 23px;
+  font-size: 24px;
+  line-height: 26px;
 }
 
 .description > p:last-child {
@@ -116,5 +128,14 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.signDialog {
+  height: 768px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  font-weight: 600;
 }
 </style>

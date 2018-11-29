@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <header>
-      <div class="logo" @click="showFullscreen">{{ logo }}</div>
+      <img class="logo" :src="logo" alt="" @click="showFullscreen">
     </header>
     <!-- <div id="nav">
       <router-link to="/">Home</router-link> |
@@ -13,15 +13,12 @@
 </template>
 
 <script>
-import signup from "@/views/signup.vue";
+import api from "@/common/api.js";
 
 export default {
-  components: {
-    signup
-  },
   data() {
     return {
-      logo: "培训机构logo"
+      logo: ""
     };
   },
   methods: {
@@ -29,6 +26,20 @@ export default {
       let element = document.documentElement;
       element.webkitRequestFullscreen();
     }
+  },
+  mounted() {
+    api
+      .getInfo()
+      .then(res => {
+        let { logo, des, classSchedule } = res.data.data;
+
+        this.logo = logo;
+        this.$store.commit("login", des);
+        this.$store.commit("class", classSchedule);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 };
 </script>
@@ -60,13 +71,8 @@ footer {
 }
 
 .logo {
-  display: inline-block;
-  width: 158px;
   height: 72px;
   background: #f2f2f2;
-  font-size: 18px;
-  text-align: center;
-  line-height: 72px;
   position: absolute;
   top: 50%;
   left: 20px;

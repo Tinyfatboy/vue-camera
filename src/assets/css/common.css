@@ -7,8 +7,12 @@ html, body{
   height: 100%;
 }
 
-.v-table-views{
-  border: none !important;
+.v-table-class{
+  border: 1px solid transparent !important;
+}
+
+.v-table-rightview{
+  right: -1px !important;
 }
 
 .tabButton{
