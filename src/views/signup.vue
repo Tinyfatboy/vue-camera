@@ -20,6 +20,14 @@
         <img v-for="(item, index) in img" :key="index" :src="item.url" alt="">
       </div> -->
     </section>
+    <div class="function">
+      <div class="camArea">
+        <video id="video" width="640" height="360" autoplay></video>
+      </div>
+      <div class="canvasArea">
+        <canvas id="canvas" width="1280" height="720"></canvas>
+      </div>
+    </div>
     <el-dialog title="签到信息" :visible.sync="dialogVisible" width="80%" top="299px" center>
       <div class="signDialog">
         {{ signInfo }}
@@ -29,8 +37,16 @@
 </template>
 
 <script>
+import api from "../common/api.js";
 import sysClock from "@/components/sys-clock.vue";
 import commonTable from "@/components/common-table.vue";
+
+const constraints = {
+  video: {
+    width: 1280,
+    height: 720
+  }
+};
 
 export default {
   name: "signup",
@@ -61,11 +77,59 @@ export default {
     goToSelect() {
       this.$router.push("/selectNo");
     },
-    signIn() {}
+    startSign() {
+      let video = document.getElementById("video");
+      let canvas = document.getElementById("canvas");
+      let ctx = canvas.getContext("2d");
+      ctx.drawImage(video, 0, 0);
+
+      let image = canvas.toDataURL("image/jpg");
+
+      let blob = api.base64toImage(image);
+      let formdata = new FormData();
+
+      formdata.append("imagefile", blob, Date.now() + ".jpg");
+
+      api
+        .recognition(formdata)
+        .then(res => {
+          console.log(res);
+          let status = res.data.status;
+          let message = res.data.message;
+          if (status === 1) {
+            console.log("识别成功");
+            this.dialogVisible = true;
+
+            setTimeout(() => {
+              this.dialogVisible === true ? (this.dialogVisible = false) : {};
+            }, 2000);
+          } else if (status === 0 && message.indexOf("not match") > -1) {
+            console.log("请手动签到");
+          } else {
+            console.log("下一轮");
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
   },
   mounted() {
+    navigator.mediaDevices
+      .getUserMedia(constraints)
+      .then(function(mediaStream) {
+        let video = document.querySelector("video");
+        video.srcObject = mediaStream;
+        video.onloadedmetadata = function(e) {
+          video.play();
+        };
+      })
+      .catch(function(err) {
+        console.log(err.name + ": " + err.message);
+      });
+
     setTimeout(() => {
-      this.dialogVisible = true;
+      this.startSign();
     }, 3000);
   }
 };
@@ -137,5 +201,14 @@ export default {
   justify-content: center;
   font-size: 36px;
   font-weight: 600;
+}
+
+.function {
+  display: none;
+}
+
+.camArea {
+  width: 640px;
+  margin: 0 auto;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="selectArea">
-    <input type="number" pattern="[0-9]*" name="featureNumber" :placeholder="placeholder" v-model="featureNo">
+    <input type="number" pattern="[0-9]*" name="featureNumber" :placeholder="placeholder" v-model="featuresNo">
     <div class="tabButton" @click="submit">{{ buttonText }}</div>
   </div>
 </template>
@@ -10,7 +10,7 @@ export default {
   name: "selectNo",
   data() {
     return {
-      featureNo: "",
+      featuresNo: "",
       placeholder: "请输入您的学号或手机号码",
       buttonText: "签到"
     };
@@ -18,18 +18,24 @@ export default {
   methods: {
     submit() {
       let submitData = {
-        featureNo: this.featureNo
+        featuresNo: this.featuresNo
       };
 
-      // api
-      //   .download(submitData)
-      //   .then(res => {
-      //     console.log(res);
+      api
+        .download(submitData)
+        .then(res => {
+          console.log(res);
+          let status = res.data.status
+          if(status === "1"){
+            console.log('查找成功')
+          }else{
+            console.log('查找失败')
+          }
           this.$router.push("/signup");
-        // })
-        // .catch(err => {
-        //   console.log(err);
-        // });
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   },
   mounted() {}

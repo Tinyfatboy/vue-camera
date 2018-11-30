@@ -6,22 +6,32 @@
     </div>
     <div class="function-area">
       <form>
-        <label for="featureNo">featureNo</label>
-        <input type="number" pattern="[0-9]*" name="featureNumber" :placeholder="placeholder1" v-model="featureNo">
+        <label for="featuresNo">featuresNo</label>
+        <input type="number" pattern="[0-9]*" name="featureNumber" :placeholder="placeholder1" v-model="featuresNo">
         <br>
-        <label for="featureType">featureType</label>
-        <input type="number" pattern="[0-9]*" name="featureType" :placeholder="placeholder2" v-model="featureType">
+        <label for="featuresType">featuresType</label>
+        <input type="number" pattern="[0-9]*" name="featuresType" :placeholder="placeholder2" v-model="featuresType">
       </form>
       <div class="tabButton" @click="snapshot">{{ buttonText }}</div>
     </div>
     <div class="canvas-area">
       <canvas id="canvas" width="1280" height="720"></canvas>
     </div>
+    <el-dialog title="注册信息" :visible.sync="dialogVisible" width="80%" top="400px" center>
+      <div v-if="isRegErr" class="regDialog">
+        {{ errReg }}
+      </div>
+      <div v-if="!isRegErr" class="regDialog">
+        <span v-if="isSuccess">{{ successReg }}</span>
+        <span v-if="!isSuccess">{{ issueReg }}</span>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import api from "../common/api.js";
+import { throws } from "assert";
 
 const constraints = {
   video: {
@@ -38,36 +48,89 @@ export default {
       placeholder1: "请输入您的学号",
       placeholder2: "请输入学员类型",
       buttonText: "采集信息",
-      featureNo: "",
-      featureType: ""
+      featuresNo: "",
+      featuresType: "",
+      dialogVisible: false,
+      errReg: "请输入学员学号和学员类型",
+      isRegErr: false,
+      isSuccess: false,
+      successReg: "学员注册成功",
+      issueReg: "未检测到人脸，请重试"
     };
   },
   methods: {
     snapshot() {
-      let video = document.getElementById("video");
-      let canvas = document.getElementById("canvas");
+      let featuresNo = this.featuresNo;
+      let featuresType = this.featuresType;
 
-      let ctx = canvas.getContext("2d");
-      ctx.drawImage(video, 0, 0);
+      if (featuresNo === "" || featuresType === "") {
+        this.isRegErr = true;
+        this.dialogVisible = true;
 
-      let image = canvas.toDataURL("image/jpg");
+        setTimeout(() => {
+          this.dialogVisible === true ? (this.dialogVisible = false) : {};
+        }, 2000);
 
-      let blob = api.base64toImage(image);
-      let formdata = new FormData();
+        return;
+      } else {
+        this.isRegErr = false;
 
-      formdata.append("imagefile", blob, Date.now() + ".jpg");
+        let video = document.getElementById("video");
+        let canvas = document.getElementById("canvas");
+        let ctx = canvas.getContext("2d");
+        ctx.drawImage(video, 0, 0);
 
-      // api
-      //   .register(formdata)
-      //   .then(response => {
-      //     console.log(response);
-      //   })
-      //   .catch(error => {
-      //     console.log(error);
-      //   });
+        let image = canvas.toDataURL("image/jpg");
+
+        let blob = api.base64toImage(image);
+        let formdata = new FormData();
+
+        formdata.append("imagefile", blob, Date.now() + ".jpg");
+        formdata.append("featuresNo", featuresNo);
+        formdata.append("featuresType", featuresType);
+
+        // let url = window.URL.createObjectURL(blob);
+        // let link = document.createElement("a");
+        // link.style.display = "none";
+        // link.href = url;
+        // link.setAttribute("download", Date.now() + ".jpg");
+
+        // document.body.appendChild(link);
+        // link.click();
+        // window.URL.revokeObjectURL(url);
+
+        api
+          .register(formdata)
+          .then(res => {
+            let status = res.data.status;
+            if (status === "1") {
+              this.isSuccess = true;
+            } else {
+              this.isSuccess = false;
+            }
+
+            this.dialogVisible = true;
+
+            setTimeout(() => {
+              this.dialogVisible === true ? (this.dialogVisible = false) : {};
+            }, 2000);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
     }
   },
   mounted() {
+    let queryString = window.location.search.substr(1).split("&")
+    let stringArr = []
+
+    queryString.map(function(item, index){
+      let query = item.split("=")[1]
+      stringArr.push(query)
+    })
+    console.log(stringArr)
+
     navigator.mediaDevices
       .getUserMedia(constraints)
       .then(function(mediaStream) {
@@ -95,7 +158,7 @@ video {
 }
 
 .cam-video {
-  margin-bottom: 50px;
+  margin-bottom: 30px;
 }
 
 .function-area {
@@ -119,15 +182,11 @@ input {
   width: 300px;
   font-size: 24px;
   border-radius: 10px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 input[name="featureNumber"] {
   margin-bottom: 30px;
-}
-
-form {
-  margin-bottom: 50px;
 }
 
 .reg {
@@ -135,6 +194,15 @@ form {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.regDialog {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  font-weight: 600;
+  height: 300px;
 }
 
 .canvas-area {

@@ -2,6 +2,6 @@
 
 module.exports = {
   devServer: {
-    proxy: 'http://94.191.102.148:8088'
+    proxy: 'http://10.0.2.14:8088'
   }
 }

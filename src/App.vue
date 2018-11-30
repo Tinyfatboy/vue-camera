@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <header>
+    <header v-if="isShow">
       <img class="logo" :src="logo" alt="" @click="showFullscreen">
     </header>
     <!-- <div id="nav">
@@ -8,7 +8,7 @@
       <router-link to="/about">About</router-link>
     </div> -->
     <router-view/>
-    <footer></footer>
+    <footer v-if="isShow"></footer>
   </div>
 </template>
 
@@ -18,7 +18,8 @@ import api from "@/common/api.js";
 export default {
   data() {
     return {
-      logo: ""
+      logo: "",
+      isShow: true
     };
   },
   methods: {
@@ -27,19 +28,35 @@ export default {
       element.webkitRequestFullscreen();
     }
   },
+  watch: {
+    $route(to, from) {
+      let path = to.path;
+      if (path === "/register") {
+        this.isShow = false;
+      } else {
+        this.isShow = true;
+      }
+    }
+  },
   mounted() {
-    api
-      .getInfo()
-      .then(res => {
-        let { logo, des, classSchedule } = res.data.data;
+    let path = this.$route.path;
+    if (path === "/register") {
+      this.isShow = false;
+    } else {
+      this.isShow = true;
+      api
+        .getInfo()
+        .then(res => {
+          let { logo, des, classSchedule } = res.data.data;
 
-        this.logo = logo;
-        this.$store.commit("login", des);
-        this.$store.commit("class", classSchedule);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+          this.logo = logo;
+          this.$store.commit("login", des);
+          this.$store.commit("class", classSchedule);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
   }
 };
 </script>
