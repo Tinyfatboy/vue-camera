@@ -2,6 +2,14 @@
   <div class="selectArea">
     <input type="number" pattern="[0-9]*" name="featureNumber" :placeholder="placeholder" v-model="featuresNo">
     <div class="tabButton" @click="submit">{{ buttonText }}</div>
+    <el-dialog title="学员信息" :visible.sync="dialogVisible" width="80%" top="400px" center>
+      <div v-if="isFound" class="displayInfo">
+        {{successInfo}}
+      </div>
+      <div v-if="!isFound" class="displayInfo">
+        {{errorInfo}}
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -12,7 +20,11 @@ export default {
     return {
       featuresNo: "",
       placeholder: "请输入您的学号或手机号码",
-      buttonText: "签到"
+      buttonText: "签到",
+      dialogVisible: false,
+      isFound: true,
+      successInfo: "已成功获取学员信息",
+      errorInfo: "您输入的号码无匹配学员"
     };
   },
   methods: {
@@ -25,11 +37,11 @@ export default {
         .download(submitData)
         .then(res => {
           console.log(res);
-          let status = res.data.status
-          if(status === "1"){
-            console.log('查找成功')
-          }else{
-            console.log('查找失败')
+          let status = res.data.status;
+          if (status === "1") {
+            console.log("查找成功");
+          } else {
+            console.log("查找失败");
           }
           this.$router.push("/signup");
         })

@@ -36,6 +36,27 @@ export default {
       ]
     };
   },
+  computed: {
+    classTime() {
+      return this.$store.state.classSchedule;
+    }
+  },
+  watch: {
+    classTime: {
+      handler(val) {
+        val.map((item, index) => {
+          let time = item.startTime + " - " + item.endTime;
+          let unit = {
+            class: item.name,
+            teacher: item.teacherNames,
+            time: time
+          };
+          this.tableData.push(unit);
+        });
+      },
+      deep: true
+    }
+  },
   mounted() {}
 };
 </script>

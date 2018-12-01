@@ -1,7 +1,7 @@
 <template>
   <div class="reg">
     <div class="cam-video">
-      <h1>{{ msg1 }}</h1>
+      <!-- <h1>{{ msg1 }}</h1> -->
       <video id="video" width="640" height="360" autoplay></video>
     </div>
     <div class="function-area">
@@ -89,58 +89,57 @@ export default {
         formdata.append("featuresNo", featuresNo);
         formdata.append("featuresType", featuresType);
 
-        // let url = window.URL.createObjectURL(blob);
-        // let link = document.createElement("a");
-        // link.style.display = "none";
-        // link.href = url;
-        // link.setAttribute("download", Date.now() + ".jpg");
+        let url = window.URL.createObjectURL(blob);
+        let link = document.createElement("a");
+        link.style.display = "none";
+        link.href = url;
+        link.setAttribute("download", Date.now() + ".jpg");
 
-        // document.body.appendChild(link);
-        // link.click();
-        // window.URL.revokeObjectURL(url);
+        document.body.appendChild(link);
+        link.click();
+        window.URL.revokeObjectURL(url);
 
-        api
-          .register(formdata)
-          .then(res => {
-            let status = res.data.status;
-            if (status === "1") {
-              this.isSuccess = true;
-            } else {
-              this.isSuccess = false;
-            }
+        // api
+        //   .register(formdata)
+        //   .then(res => {
+        //     let status = res.data.status;
+        //     if (status === "1") {
+        //       this.isSuccess = true;
+        //     } else {
+        //       this.isSuccess = false;
+        //     }
 
-            this.dialogVisible = true;
+        //     this.dialogVisible = true;
 
-            setTimeout(() => {
-              this.dialogVisible === true ? (this.dialogVisible = false) : {};
-            }, 2000);
-          })
-          .catch(err => {
-            console.log(err);
-          });
+        //     setTimeout(() => {
+        //       this.dialogVisible === true ? (this.dialogVisible = false) : {};
+        //     }, 2000);
+        //   })
+        //   .catch(err => {
+        //     console.log(err);
+        //   });
       }
     }
   },
   mounted() {
-    let queryString = window.location.search.substr(1).split("&")
-    let stringArr = []
+    // let queryString = window.location.search.substr(1).split("&");
+    // let stringArr = [];
 
-    queryString.map(function(item, index){
-      let query = item.split("=")[1]
-      stringArr.push(query)
-    })
-    console.log(stringArr)
+    // queryString.map((item, index) => {
+    //   let query = item.split("=")[1];
+    //   stringArr.push(query);
+    // });
 
     navigator.mediaDevices
       .getUserMedia(constraints)
-      .then(function(mediaStream) {
+      .then(mediaStream => {
         let video = document.querySelector("video");
         video.srcObject = mediaStream;
-        video.onloadedmetadata = function(e) {
+        video.onloadedmetadata = () => {
           video.play();
         };
       })
-      .catch(function(err) {
+      .catch(err => {
         console.log(err.name + ": " + err.message);
       });
   }

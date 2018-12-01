@@ -28,9 +28,14 @@
         <canvas id="canvas" width="1280" height="720"></canvas>
       </div>
     </div>
-    <el-dialog title="签到信息" :visible.sync="dialogVisible" width="80%" top="299px" center>
-      <div class="signDialog">
-        {{ signInfo }}
+    <el-dialog title="签到信息" :visible.sync="dialogVisible" width="80%" top="280px" center>
+      <div v-if="isSign" class="signDialog">
+        <span>{{ signInfo }}</span>
+        <span>签到的号码为{{ number }} 类型为{{ type }}</span>
+      </div>
+      <div v-if="!isSign" class="signDialog">
+        <span>{{ errorInfo1 }}</span>
+        <span>{{ errorInfo2 }}</span>
       </div>
     </el-dialog>
   </div>
@@ -64,8 +69,13 @@ export default {
         { url: "https://via.placeholder.com/230" }
       ],
       classTitle: "课程表",
-      dialogVisible: false,
-      signInfo: "签到成功"
+      dialogVisible: true,
+      signInfo: "签到成功",
+      errorInfo1: "暂无数据",
+      errorInfo2: "请使用手动签到功能",
+      isSign: false,
+      number: "",
+      type: ""
     };
   },
   computed: {
@@ -90,24 +100,36 @@ export default {
 
       formdata.append("imagefile", blob, Date.now() + ".jpg");
 
+      // let url = window.URL.createObjectURL(blob);
+      // let link = document.createElement("a");
+      // link.style.display = "none";
+      // link.href = url;
+      // link.setAttribute("download", Date.now() + ".jpg");
+
+      // document.body.appendChild(link);
+      // link.click();
+      // window.URL.revokeObjectURL(url);
+
       api
         .recognition(formdata)
         .then(res => {
-          console.log(res);
-          let status = res.data.status;
-          let message = res.data.message;
-          if (status === 1) {
-            console.log("识别成功");
-            this.dialogVisible = true;
-
-            setTimeout(() => {
-              this.dialogVisible === true ? (this.dialogVisible = false) : {};
-            }, 2000);
-          } else if (status === 0 && message.indexOf("not match") > -1) {
-            console.log("请手动签到");
-          } else {
-            console.log("下一轮");
-          }
+          // let status = res.data.status;
+          // let message = res.data.message;
+          // if (status === "1") {
+          //   this.isSign = true;
+          //   this.dialogVisible = true;
+          //   setTimeout(() => {
+          //     this.dialogVisible === true ? (this.dialogVisible = false) : {};
+          //   }, 2000);
+          // } else if (status === "0" && message.indexOf("not match") > -1) {
+          //   this.isSign = false;
+          //   this.dialogVisible = true;
+          //   setTimeout(() => {
+          //     this.dialogVisible === true ? (this.dialogVisible = false) : {};
+          //   }, 2000);
+          // } else {
+          //   console.log("下一轮");
+          // }
         })
         .catch(err => {
           console.log(err);
@@ -117,14 +139,14 @@ export default {
   mounted() {
     navigator.mediaDevices
       .getUserMedia(constraints)
-      .then(function(mediaStream) {
+      .then(mediaStream => {
         let video = document.querySelector("video");
         video.srcObject = mediaStream;
-        video.onloadedmetadata = function(e) {
+        video.onloadedmetadata = () => {
           video.play();
         };
       })
-      .catch(function(err) {
+      .catch(err => {
         console.log(err.name + ": " + err.message);
       });
 
@@ -198,9 +220,14 @@ export default {
   height: 768px;
   display: flex;
   align-items: center;
+  flex-direction: column;
   justify-content: center;
   font-size: 36px;
   font-weight: 600;
+}
+
+.signDialog > span:first-child {
+  margin-bottom: 30px;
 }
 
 .function {
