@@ -1,7 +1,7 @@
 <template>
   <div class="reg">
     <div class="cam-video">
-      <!-- <h1>{{ msg1 }}</h1> -->
+      <h1>{{ msg1 }}</h1>
       <video id="video" width="640" height="360" autoplay></video>
     </div>
     <div class="function-area">
@@ -15,7 +15,7 @@
       <div class="tabButton" @click="snapshot">{{ buttonText }}</div>
     </div>
     <div class="canvas-area">
-      <canvas id="canvas" width="1280" height="720"></canvas>
+      <canvas id="canvas" width="640" height="360"></canvas>
     </div>
     <el-dialog title="注册信息" :visible.sync="dialogVisible" width="80%" top="400px" center>
       <div v-if="isRegErr" class="regDialog">
@@ -35,8 +35,8 @@ import { throws } from "assert";
 
 const constraints = {
   video: {
-    width: 1280,
-    height: 720
+    width: 640,
+    height: 360
   }
 };
 
