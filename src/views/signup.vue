@@ -45,6 +45,7 @@
 import api from "../common/api.js";
 import sysClock from "@/components/sys-clock.vue";
 import commonTable from "@/components/common-table.vue";
+import { setInterval } from "timers";
 
 const constraints = {
   video: {
@@ -69,7 +70,7 @@ export default {
         { url: "https://via.placeholder.com/230" }
       ],
       classTitle: "课程表",
-      dialogVisible: true,
+      dialogVisible: false,
       signInfo: "签到成功",
       errorInfo1: "暂无数据",
       errorInfo2: "请使用手动签到功能",
@@ -113,23 +114,29 @@ export default {
       api
         .recognition(formdata)
         .then(res => {
-          // let status = res.data.status;
-          // let message = res.data.message;
-          // if (status === "1") {
-          //   this.isSign = true;
-          //   this.dialogVisible = true;
-          //   setTimeout(() => {
-          //     this.dialogVisible === true ? (this.dialogVisible = false) : {};
-          //   }, 2000);
-          // } else if (status === "0" && message.indexOf("not match") > -1) {
-          //   this.isSign = false;
-          //   this.dialogVisible = true;
-          //   setTimeout(() => {
-          //     this.dialogVisible === true ? (this.dialogVisible = false) : {};
-          //   }, 2000);
-          // } else {
-          //   console.log("下一轮");
-          // }
+          let status = res.data.status;
+          let message = res.data.message;
+          if (status === "1") {
+            let { featuresNo, featuresType } = res.data.data[0];
+
+            this.isSign = true;
+            this.number = featuresNo
+            this.type = featuresType
+            this.dialogVisible = true;
+
+            setTimeout(() => {
+              this.dialogVisible === true ? (this.dialogVisible = false) : {};
+            }, 2000);
+          } else if (status === "0" && message.indexOf("not match") > -1) {
+            this.isSign = false;
+            this.dialogVisible = true;
+
+            setTimeout(() => {
+              this.dialogVisible === true ? (this.dialogVisible = false) : {};
+            }, 2000);
+          } else {
+            console.log("下一轮");
+          }
         })
         .catch(err => {
           console.log(err);
@@ -150,9 +157,9 @@ export default {
         console.log(err.name + ": " + err.message);
       });
 
-    setTimeout(() => {
+    setInterval(() => {
       this.startSign();
-    }, 3000);
+    }, 8000);
   }
 };
 </script>

@@ -2,7 +2,7 @@
   <div class="reg">
     <div class="cam-video">
       <h1>{{ msg1 }}</h1>
-      <video id="video" width="640" height="360" autoplay></video>
+      <video id="video" width="640" height="480" autoplay></video>
     </div>
     <div class="function-area">
       <form>
@@ -15,7 +15,7 @@
       <div class="tabButton" @click="snapshot">{{ buttonText }}</div>
     </div>
     <div class="canvas-area">
-      <canvas id="canvas" width="640" height="360"></canvas>
+      <canvas id="canvas" width="640" height="480"></canvas>
     </div>
     <el-dialog title="注册信息" :visible.sync="dialogVisible" width="80%" top="400px" center>
       <div v-if="isRegErr" class="regDialog">
@@ -36,7 +36,7 @@ import { throws } from "assert";
 const constraints = {
   video: {
     width: 640,
-    height: 360
+    height: 480
   }
 };
 
@@ -89,35 +89,35 @@ export default {
         formdata.append("featuresNo", featuresNo);
         formdata.append("featuresType", featuresType);
 
-        let url = window.URL.createObjectURL(blob);
-        let link = document.createElement("a");
-        link.style.display = "none";
-        link.href = url;
-        link.setAttribute("download", Date.now() + ".jpg");
+        // let url = window.URL.createObjectURL(blob);
+        // let link = document.createElement("a");
+        // link.style.display = "none";
+        // link.href = url;
+        // link.setAttribute("download", Date.now() + ".jpg");
 
-        document.body.appendChild(link);
-        link.click();
-        window.URL.revokeObjectURL(url);
+        // document.body.appendChild(link);
+        // link.click();
+        // window.URL.revokeObjectURL(url);
 
-        // api
-        //   .register(formdata)
-        //   .then(res => {
-        //     let status = res.data.status;
-        //     if (status === "1") {
-        //       this.isSuccess = true;
-        //     } else {
-        //       this.isSuccess = false;
-        //     }
+        api
+          .register(formdata)
+          .then(res => {
+            let status = res.data.status;
+            if (status === "1") {
+              this.isSuccess = true;
+            } else {
+              this.isSuccess = false;
+            }
 
-        //     this.dialogVisible = true;
+            this.dialogVisible = true;
 
-        //     setTimeout(() => {
-        //       this.dialogVisible === true ? (this.dialogVisible = false) : {};
-        //     }, 2000);
-        //   })
-        //   .catch(err => {
-        //     console.log(err);
-        //   });
+            setTimeout(() => {
+              this.dialogVisible === true ? (this.dialogVisible = false) : {};
+            }, 2000);
+          })
+          .catch(err => {
+            console.log(err);
+          });
       }
     }
   },
