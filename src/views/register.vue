@@ -1,23 +1,16 @@
 <template>
   <div class="reg">
     <div class="cam-video">
-      <h1>{{ msg1 }}</h1>
       <video id="video" width="640" height="480" autoplay></video>
     </div>
     <div class="function-area">
-      <form>
-        <label for="featuresNo">featuresNo</label>
-        <input type="number" pattern="[0-9]*" name="featureNumber" :placeholder="placeholder1" v-model="featuresNo">
-        <br>
-        <label for="featuresType">featuresType</label>
-        <input type="number" pattern="[0-9]*" name="featuresType" :placeholder="placeholder2" v-model="featuresType">
-      </form>
-      <div class="tabButton" @click="snapshot">{{ buttonText }}</div>
+      <!-- <div class="tabButton" @click="snapshot">{{ buttonText }}</div> -->
+      <el-button type="primary" size="medium" @click="snapshot">{{ buttonText }}</el-button>
     </div>
     <div class="canvas-area">
       <canvas id="canvas" width="640" height="480"></canvas>
     </div>
-    <el-dialog title="注册信息" :visible.sync="dialogVisible" width="80%" top="400px" center>
+    <el-dialog title="注册信息" :visible.sync="dialogVisible" width="80%" top="95px" center>
       <div v-if="isRegErr" class="regDialog">
         {{ errReg }}
       </div>
@@ -44,14 +37,11 @@ export default {
   name: "register",
   data() {
     return {
-      msg1: "请对准摄像头",
-      placeholder1: "请输入您的学号",
-      placeholder2: "请输入学员类型",
       buttonText: "采集信息",
       featuresNo: "",
       featuresType: "",
       dialogVisible: false,
-      errReg: "请输入学员学号和学员类型",
+      errReg: "没有学员信息",
       isRegErr: false,
       isSuccess: false,
       successReg: "学员注册成功",
@@ -122,13 +112,16 @@ export default {
     }
   },
   mounted() {
-    // let queryString = window.location.search.substr(1).split("&");
-    // let stringArr = [];
+    let queryString = window.location.search.substr(1).split("&");
+    let stringArr = {};
 
-    // queryString.map((item, index) => {
-    //   let query = item.split("=")[1];
-    //   stringArr.push(query);
-    // });
+    queryString.map((item, index) => {
+      let parts = item.split("=");
+      stringArr[decodeURIComponent(parts[0])] =
+        decodeURIComponent(parts[1]) || "";
+    });
+
+    console.log(queryString);
 
     navigator.mediaDevices
       .getUserMedia(constraints)
@@ -148,16 +141,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1 {
-  text-align: center;
-}
-
 video {
-  border: 1px solid #666666;
-}
-
-.cam-video {
-  margin-bottom: 30px;
+  vertical-align: top;
 }
 
 .function-area {
@@ -165,34 +150,15 @@ video {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-
-label {
-  width: 150px;
-  font-size: 24px;
-  display: inline-block;
-}
-
-input {
-  border: 2px solid #cacaca;
-  outline: none;
-  text-align: center;
-  height: 52px;
-  width: 300px;
-  font-size: 24px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-}
-
-input[name="featureNumber"] {
-  margin-bottom: 30px;
+  margin-top: 22px;
 }
 
 .reg {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  height: 100%;
 }
 
 .regDialog {

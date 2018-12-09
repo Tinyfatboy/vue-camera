@@ -57,6 +57,20 @@ export default {
       deep: true
     }
   },
-  mounted() {}
+  mounted() {
+    let classTime = this.classTime;
+
+    if (classTime) {
+      classTime.map((item, index) => {
+        let time = item.startTime + " - " + item.endTime;
+        let unit = {
+          class: item.name,
+          teacher: item.teacherNames,
+          time: time
+        };
+        this.tableData.push(unit);
+      });
+    }
+  }
 };
 </script>

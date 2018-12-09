@@ -16,13 +16,10 @@
           <br v-if="item === ''">
         </p>
       </div>
-      <!-- <div class="slide">
-        <img v-for="(item, index) in img" :key="index" :src="item.url" alt="">
-      </div> -->
     </section>
     <div class="function">
       <div class="camArea">
-        <video id="video" width="640" height="360" autoplay></video>
+        <video id="video" width="720" height="405" autoplay></video>
       </div>
       <div class="canvasArea">
         <canvas id="canvas" width="1280" height="720"></canvas>
@@ -45,7 +42,6 @@
 import api from "../common/api.js";
 import sysClock from "@/components/sys-clock.vue";
 import commonTable from "@/components/common-table.vue";
-import { setInterval } from "timers";
 
 const constraints = {
   video: {
@@ -81,7 +77,7 @@ export default {
   },
   computed: {
     intro() {
-      return this.$store.getters.desc.slice(0, 22);
+      return this.$store.getters.desc.slice(0, 5);
     }
   },
   methods: {
@@ -117,16 +113,18 @@ export default {
           let status = res.data.status;
           let message = res.data.message;
           if (status === "1") {
-            let { featuresNo, featuresType } = res.data.data[0];
+            let { featuresNo, featuresType, successUrl } = res.data.data[0];
 
             this.isSign = true;
-            this.number = featuresNo
-            this.type = featuresType
-            this.dialogVisible = true;
+            this.number = featuresNo;
+            this.type = featuresType;
+
+            // this.dialogVisible = true;
+            this.$store.commit("successLogin", successUrl);
 
             setTimeout(() => {
-              this.dialogVisible === true ? (this.dialogVisible = false) : {};
-            }, 2000);
+              this.$router.push("/successInfo");
+            }, 1000);
           } else if (status === "0" && message.indexOf("not match") > -1) {
             this.isSign = false;
             this.dialogVisible = true;
@@ -157,9 +155,9 @@ export default {
         console.log(err.name + ": " + err.message);
       });
 
-    setInterval(() => {
+    setTimeout(() => {
       this.startSign();
-    }, 8000);
+    }, 2000);
   }
 };
 </script>
@@ -237,12 +235,21 @@ export default {
   margin-bottom: 30px;
 }
 
-.function {
+.function > .canvasArea {
   display: none;
 }
 
+.function {
+  position: absolute;
+  bottom: 112px;
+  left: 23px;
+}
+
 .camArea {
-  width: 640px;
-  margin: 0 auto;
+  border: 1px solid #666666;
+}
+
+video {
+  vertical-align: bottom;
 }
 </style>

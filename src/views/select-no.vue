@@ -14,6 +14,8 @@
 </template>
 
 <script>
+import api from "../common/api.js";
+
 export default {
   name: "selectNo",
   data() {
