@@ -1,0 +1,96 @@
+html,
+body,
+div,
+ul,
+li,
+ol,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+span,
+input {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font: 12px/1.5em "宋体", arial;
+    color: #3c3c3c;
+	font-family: MicrosoftYaHei;
+
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-size:100%;
+}
+
+img {
+    border: 0;
+    display: block;
+}
+
+ul,
+ol {
+    list-style:none;
+}
+
+a {
+    text-decoration: none;
+    color: #333333;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.clearfix:after {
+    content: "";
+    display: block;
+    height: 0;
+    visibility: hidden;
+    clear: both;
+}
+
+.clearfix {
+    zoom: 1;
+}
+
+.logo {
+    position: absolute;
+    width: 13rem;
+    margin-top: 3rem;
+    margin-left: 3.2rem;
+    z-index: 9999;
+}
+
+.content {
+    min-width: 48rem;
+    margin: auto;
+    height: 100vh;
+    min-height: 85.4rem;
+    overflow-x: hidden;
+    position: relative;
+}
+
+.dialog{
+    height: 400px;
+    font-size: 2rem;
+    line-height: 3rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.dialog > span:last-child{
+    margin-top: 100px;
+}

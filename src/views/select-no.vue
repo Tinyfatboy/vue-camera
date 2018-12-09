@@ -1,13 +1,18 @@
 <template>
-  <div class="selectArea">
-    <input type="number" pattern="[0-9]*" name="featureNumber" :placeholder="placeholder" v-model="featuresNo">
-    <div class="tabButton" @click="submit">{{ buttonText }}</div>
-    <el-dialog title="学员信息" :visible.sync="dialogVisible" width="80%" top="400px" center>
-      <div v-if="isFound" class="displayInfo">
-        {{successInfo}}
+  <div class="content activate">
+    <div class="inputActivate">
+      <div class="people">
       </div>
-      <div v-if="!isFound" class="displayInfo">
-        {{errorInfo}}
+      <input type="number" pattern="[0-9]*" v-model="featuresNo" placeholder="请输入您的手机号或者学号">
+    </div>
+    <div class="redSignIn" @click="submit">
+      <span>签到</span>
+    </div>
+    <el-dialog title="学员信息" :visible.sync="dialogVisible" width="80%" top="420px" center>
+      <div class="dialog">
+        <span v-if="isFound">{{successInfo}}</span>
+        <span v-if="!isFound">{{errorInfo}}</span>
+        <span>正在跳转回主页面</span>
       </div>
     </el-dialog>
   </div>
@@ -21,12 +26,10 @@ export default {
   data() {
     return {
       featuresNo: "",
-      placeholder: "请输入您的学号或手机号码",
-      buttonText: "签到",
       dialogVisible: false,
-      isFound: true,
-      successInfo: "已成功获取学员信息",
-      errorInfo: "您输入的号码无匹配学员"
+      isFound: false,
+      successInfo: "成功获取学员信息",
+      errorInfo: "暂无匹配学员信息"
     };
   },
   methods: {
@@ -41,11 +44,14 @@ export default {
           console.log(res);
           let status = res.data.status;
           if (status === "1") {
-            console.log("查找成功");
+            this.isFound = true
           } else {
-            console.log("查找失败");
+            this.isFound = false
           }
-          this.$router.push("/signup");
+          this.dialogVisible = true
+          setTimeout(() => {
+            this.$router.push("/signup");
+          }, 3000);
         })
         .catch(err => {
           console.log(err);
@@ -58,25 +64,17 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.selectArea {
+.activeInfo{
+  height: 400px;
+  font-size: 2rem;
+  text-align: center;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
   align-items: center;
-  height: calc(100% - 204px);
+  justify-content: center;
 }
 
-input {
-  border: 3px solid #cacaca;
-  outline: none;
-  text-align: center;
-  height: 110px;
-  width: 680px;
-  font-size: 36px;
-  border-radius: 20px;
-}
-
-input::-webkit-input-placeholder {
-  color: #cacaca;
+.activeInfo > span:last-child{
+  margin-top: 100px;
 }
 </style>

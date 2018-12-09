@@ -5,22 +5,22 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    description: "",
-    classSchedule: [],
+    // description: "",
+    // classSchedule: [],
     successUrl: ""
   },
-  getters: {
-    desc: state => {
-      return state.description.split('\n')
-    }
-  },
+  // getters: {
+  //   desc: state => {
+  //     return state.description.split('\n')
+  //   }
+  // },
   mutations: {
-    login(state, data) {
-      state.description = data
-    },
-    class(state, data) {
-      state.classSchedule = data
-    },
+    // login(state, data) {
+    //   state.description = data
+    // },
+    // class(state, data) {
+    //   state.classSchedule = data
+    // },
     successLogin(state, data) {
       state.successUrl = data
     }

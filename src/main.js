@@ -4,16 +4,14 @@ import router from './router'
 import store from './store'
 import axios from 'axios';
 import VueAxios from 'vue-axios';
-import {VTable} from 'vue-easytable'
 import './plugins/element.js'
-import 'normalize.css';
-import "./assets/css/common.css"
-import 'vue-easytable/libs/themes-base/index.css'
+import "./assets/css/public.css"
+import "./assets/css/home.css"
+import "./assets/css/activate.css"
 
 Vue.config.productionTip = false
 
 Vue.use(VueAxios, axios)
-Vue.component(VTable.name, VTable)
 
 new Vue({
   router,

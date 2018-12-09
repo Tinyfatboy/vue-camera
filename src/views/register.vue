@@ -4,7 +4,6 @@
       <video id="video" width="640" height="480" autoplay></video>
     </div>
     <div class="function-area">
-      <!-- <div class="tabButton" @click="snapshot">{{ buttonText }}</div> -->
       <el-button type="primary" size="medium" @click="snapshot">{{ buttonText }}</el-button>
     </div>
     <div class="canvas-area">
@@ -41,7 +40,7 @@ export default {
       featuresNo: "",
       featuresType: "",
       dialogVisible: false,
-      errReg: "没有学员信息",
+      errReg: "错误，没有学员信息",
       isRegErr: false,
       isSuccess: false,
       successReg: "学员注册成功",

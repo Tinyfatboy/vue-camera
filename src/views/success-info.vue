@@ -17,9 +17,9 @@ export default {
   },
   methods: {},
   mounted() {
-    setTimeout(() => {
-      
-    }, 4000);
+    let timer = setTimeout(() => {
+      this.$router.push("/signup");
+    }, 3000);
   }
 };
 </script>
