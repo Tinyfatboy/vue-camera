@@ -3,10 +3,6 @@
     <div class="logo" v-if="isShow" @click="showFullscreen">
       <img :src="imgUrl" width="100%" height="100%" alt="">
     </div>
-    <!-- <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div> -->
     <router-view/>
   </div>
 </template>
@@ -30,7 +26,7 @@ export default {
   watch: {
     $route(to, from) {
       let path = to.path;
-      if (path === "/successInfo") {
+      if (path === "/successInfo" || path === "/register") {
         this.isShow = false;
       } else {
         this.isShow = true;
@@ -39,7 +35,7 @@ export default {
   },
   mounted() {
     let path = this.$route.path;
-    if (path === "/successInfo") {
+    if (path === "/successInfo" || path === "/register") {
       this.isShow = false;
     } else {
       this.isShow = true;
@@ -55,6 +51,6 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   position: relative;
-  height: 100%;
+  height: 100vh;
 }
 </style>

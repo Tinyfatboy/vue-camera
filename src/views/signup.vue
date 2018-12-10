@@ -1,8 +1,5 @@
 <template>
   <div class="content home">
-    <!-- <div class="logo">
-      <img :src="img[0].url" width="100%" height="100%" alt="">
-    </div> -->
     <div class="timImg">
       <img :src="img[0].url" width="100%" alt="">
       <span>{{ date }}</span><br>
@@ -15,30 +12,33 @@
       <div class="titleBk">
         <span>课程表</span>
       </div>
-      <table class="contenBK">
-        <tr>
-          <th>课程名称</th>
-          <th>上课时间</th>
-          <th>老师/教练</th>
-        </tr>
-        <tbody>
-          <tr>
-            <td>少儿跆拳道精英班</td>
-            <td>14：00-15：00</td>
-            <td>李教练</td>
-          </tr>
-          <tr>
-            <td>少儿跆拳道精英班</td>
-            <td>14：00-15：00</td>
-            <td>李教练</td>
-          </tr>
-          <tr>
-            <td>少儿跆拳道精英班</td>
-            <td>14：00-15：00</td>
-            <td>李教练</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-wrapper">
+        <div class="table-head">
+          <table class="contenBK">
+            <thead>
+              <tr>
+                <th style="width: 15rem;">课程名称</th>
+                <th style="width: 13rem;">上课时间</th>
+                <th style="width: 11rem;">老师/教练</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+        <div v-if="noClass" class="no-class">
+          <span>暂无课程安排</span>
+        </div>
+        <div v-if="!noClass" class="table-body">
+          <table class="contenBK">
+            <tbody>
+              <tr v-for="(item, index) in tableData" :key="index">
+                <td style="width: 15rem;">{{ item.className }}</td>
+                <td style="width: 13rem;">{{ item.classTime }}</td>
+                <td style="width: 11rem;">{{ item.teacher }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
     <div class="tableBk">
       <div class="titleBk">
@@ -58,7 +58,7 @@
       </div>
     </div>
     <div class="canvasBK">
-      <canvas id="canvas" width="1280" height="720"></canvas>
+      <canvas id="canvas" width="720" height="720"></canvas>
     </div>
     <el-dialog title="签到信息" :visible.sync="dialogVisible" width="80%" top="420px" center>
       <div v-if="isSign" class="dialog success">
@@ -101,11 +101,13 @@ export default {
         { url: require("../assets/img/signIn.png") },
         { url: require("../assets/img/photo.png") }
       ],
+      tableData: [],
       dialogVisible: false,
       signInfo: "签到成功，正在跳转...",
       errorInfo1: "暂无数据",
       errorInfo2: "请使用手动签到功能",
       isSign: false,
+      noClass: true,
       timer: null
     };
   },
@@ -123,9 +125,75 @@ export default {
       return weekTable[index - 1];
     }
   },
+  watch: {
+    tableData: {
+      handler(val) {
+        if (val.length === 0) {
+          this.noClass = true;
+        } else {
+          this.noClass = false;
+        }
+      },
+      deep: true
+    }
+  },
   methods: {
     goToSelect() {
       this.$router.push("/selectNo");
+    },
+    doSign() {
+      console.log("begin");
+      clearInterval(this.timer);
+
+      let video = document.getElementById("video");
+      let canvas = document.getElementById("canvas");
+      let ctx = canvas.getContext("2d");
+      ctx.drawImage(video, 280, 0, 720, 720, 0, 0, 720, 720);
+      video.pause();
+
+      let image = canvas.toDataURL("image/jpg");
+      let blob = api.base64toImage(image);
+
+      let formdata = new FormData();
+
+      formdata.append("imagefile", blob, Date.now() + ".jpg");
+
+      api
+        .recognition(formdata)
+        .then(res => {
+          let status = res.data.status;
+          let message = res.data.message;
+
+          if (status === "1") {
+            let { successUrl } = res.data.data[0];
+            this.isSign = true;
+            this.dialogVisible = true;
+
+            this.$store.commit("successLogin", successUrl);
+            setTimeout(() => {
+              this.$router.push("/successInfo");
+            }, 2000);
+          } else {
+            if (status === "0" && message.indexOf("not match") > -1) {
+              this.isSign = false;
+              this.dialogVisible = true;
+
+              setTimeout(() => {
+                this.dialogVisible === true ? (this.dialogVisible = false) : {};
+              }, 2000);
+            } else {
+              console.log("下一轮");
+            }
+            video.play()
+            this.timer = setTimeout(() =>{
+              this.doSign()
+            }, 6000)
+          }
+          console.log("resolve");
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   },
   mounted() {
@@ -147,75 +215,31 @@ export default {
       .then(res => {
         let { classSchedule } = res.data.data;
 
-        console.log(classSchedule);
+        classSchedule.map((item, index) => {
+          let time =
+            item.startTime.slice(0, -3) + " - " + item.endTime.slice(0, -3);
+
+          let unit = {
+            className: item.name,
+            teacher: item.teacherNames,
+            classTime: time
+          };
+
+          this.tableData.push(unit);
+        });
+
+        console.log(this.tableData);
       })
       .catch(err => {
         console.log(err);
       });
 
-    this.timer = setInterval(() => {
-      console.log('down')
-      let video = document.getElementById("video");
-      let canvas = document.getElementById("canvas");
-      let ctx = canvas.getContext("2d");
-      ctx.drawImage(video, 0, 0);
-      video.pause()
-
-      let image = canvas.toDataURL("image/jpg");
-      let blob = api.base64toImage(image);
-
-      let formdata = new FormData();
-      
-      formdata.append("imagefile", blob, Date.now() + ".jpg");
-
-      // let url = window.URL.createObjectURL(blob);
-      // let link = document.createElement("a");
-      // link.style.display = "none";
-      // link.href = url;
-      // link.setAttribute("download", Date.now() + ".jpg");
-
-      // document.body.appendChild(link);
-      // link.click();
-      // window.URL.revokeObjectURL(url);
-
-      api
-        .recognition(formdata)
-        .then(res => {
-          let status = res.data.status;
-          let message = res.data.message;
-          if (status === "1") {
-            clearInterval(this.timer)
-            this.timer = null
-            
-            let { successUrl } = res.data.data[0];
-            this.isSign = true;
-            this.dialogVisible = true;
-
-            this.$store.commit("successLogin", successUrl);
-            setTimeout(() => {
-              this.$router.push("/successInfo");
-            }, 2000);
-          } else if (status === "0" && message.indexOf("not match") > -1) {
-            this.isSign = false;
-            this.dialogVisible = true;
-            video.play()
-
-            setTimeout(() => {
-              this.dialogVisible === true ? (this.dialogVisible = false) : {};
-            }, 2000);
-          } else {
-            video.play()
-            console.log("下一轮");
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    }, 8000);
+    this.timer = setTimeout(() => {
+      this.doSign();
+    }, 6000);
   },
   beforeDestroy() {
-    clearInterval(this.timer);
-    this.timer = null;
+    clearTimeout(this.timer);
   }
 };
 </script>

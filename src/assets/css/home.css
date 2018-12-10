@@ -55,8 +55,25 @@
 	font-weight: normal;
 	font-stretch: normal;
 	line-height: 2.8rem;
-	letter-spacing: 0rem;
+    letter-spacing: 0rem;
     color: #333333;
+}
+.table-head > .contenBK{
+    padding-bottom: 0;
+}
+.table-body{
+    height: 9rem;
+    overflow-y: scroll;
+    padding-bottom: 1rem;
+}
+.table-wrapper{
+    background: #ffffff;
+}
+.no-class{
+    text-align: center;
+    font-size: 1.5rem;
+    line-height: 9rem;
+    height: 9rem;
     padding-bottom: 1rem;
 }
 p.contenBK{
