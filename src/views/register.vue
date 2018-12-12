@@ -36,7 +36,7 @@ export default {
   name: "register",
   data() {
     return {
-      query: {},
+      query: [],
       buttonText: "采集信息",
       dialogVisible: false,
       errReg: "错误，没有学员信息",
@@ -48,8 +48,8 @@ export default {
   },
   methods: {
     snapshot() {
-      let featuresNo = this.query["featuresNO"] || "";
-      let featuresType = this.query["featuresType"] || "";
+      let featuresNo = this.query[0] || "";
+      let featuresType = this.query[1] || "";
 
       if (featuresNo === "" || featuresType === "") {
         this.isRegErr = true;
@@ -110,17 +110,21 @@ export default {
     }
   },
   mounted() {
-    let queryString = window.location.search.substr(1).split("&");
-    let stringArr = {};
+    let queryString = window.location.hash.split("?")[1].split("&");
+    let stringArr = [];
+
+    // queryString.map((item, index) => {
+    //   let parts = item.split("=");
+    //   stringArr[decodeURIComponent(parts[0])] =
+    //     decodeURIComponent(parts[1]) || "";
+    // });
 
     queryString.map((item, index) => {
-      let parts = item.split("=");
-      stringArr[decodeURIComponent(parts[0])] =
-        decodeURIComponent(parts[1]) || "";
+      let parts = item.split("=")[1];
+      stringArr.push(parts)
     });
 
-    console.log(stringArr);
-    this.query = stringArr
+    this.query = stringArr;
 
     navigator.mediaDevices
       .getUserMedia(constraints)
