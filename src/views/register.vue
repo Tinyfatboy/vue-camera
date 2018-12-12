@@ -36,9 +36,8 @@ export default {
   name: "register",
   data() {
     return {
+      query: {},
       buttonText: "采集信息",
-      featuresNo: "",
-      featuresType: "",
       dialogVisible: false,
       errReg: "错误，没有学员信息",
       isRegErr: false,
@@ -49,8 +48,8 @@ export default {
   },
   methods: {
     snapshot() {
-      let featuresNo = this.featuresNo;
-      let featuresType = this.featuresType;
+      let featuresNo = this.query["featuresNO"] || "";
+      let featuresType = this.query["featuresType"] || "";
 
       if (featuresNo === "" || featuresType === "") {
         this.isRegErr = true;
@@ -120,7 +119,8 @@ export default {
         decodeURIComponent(parts[1]) || "";
     });
 
-    console.log(queryString);
+    console.log(stringArr);
+    this.query = stringArr
 
     navigator.mediaDevices
       .getUserMedia(constraints)
