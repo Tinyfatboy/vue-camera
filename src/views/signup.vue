@@ -1,7 +1,11 @@
 <template>
   <div class="content home">
     <div class="timImg">
-      <img :src="img[0].url" width="100%" alt="">
+      <div class="clock">
+        <div class="minuteHand" :style="minDeg"></div>
+        <div class="hourHand" :style="hourDeg"></div>
+      </div>
+      <!-- <img :src="img[0].url" width="100%" alt=""> -->
       <span>{{ date }}</span><br>
       <span>{{ weekday }}</span>
     </div>
@@ -108,7 +112,19 @@ export default {
       errorInfo2: "请使用手动签到功能",
       isSign: false,
       noClass: true,
-      timer: null
+      timer: null,
+      clockTimer: null,
+      clock: {
+        hour: "",
+        minute: "",
+        second: ""
+      },
+      minDeg: {
+        transform: ""
+      },
+      hourDeg: {
+        transform: ""
+      }
     };
   },
   computed: {
@@ -135,11 +151,26 @@ export default {
         }
       },
       deep: true
+    },
+    clock: {
+      handler(val) {
+        let { hour, minute, second } = val;
+        let secondDeg = second / 60 * 360;
+        let minuteDeg = minute / 60 * 360 + secondDeg / 360 * 6;
+        let hourDeg = hour / 12 * 360 + minuteDeg / 60 * 6;
+
+        this.minDeg.transform = `rotate(${minuteDeg}deg)`;
+        this.hourDeg.transform = `rotate(${hourDeg}deg)`;
+      },
+      deep: true
     }
   },
   methods: {
     goToSelect() {
       this.$router.push("/selectNo");
+    },
+    getTime() {
+      this.clock = api.getTime();
     },
     doSign() {
       console.log("begin");
@@ -184,10 +215,10 @@ export default {
             } else {
               console.log("下一轮");
             }
-            video.play()
-            this.timer = setTimeout(() =>{
-              this.doSign()
-            }, 6000)
+            video.play();
+            this.timer = setTimeout(() => {
+              this.doSign();
+            }, 6000);
           }
           console.log("resolve");
         })
@@ -237,9 +268,13 @@ export default {
     this.timer = setTimeout(() => {
       this.doSign();
     }, 6000);
+    this.clockTimer = setInterval(() => {
+      this.getTime()
+    }, 1000);
   },
   beforeDestroy() {
     clearTimeout(this.timer);
+    clearInterval(this.clockTimer)
   }
 };
 </script>
