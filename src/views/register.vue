@@ -2,12 +2,13 @@
   <div class="reg">
     <div class="cam-video">
       <video id="video" width="640" height="480" autoplay></video>
+      <img :src="imgUrl" width="270px" alt="">
     </div>
     <div class="function-area">
       <el-button type="primary" size="medium" @click="snapshot">{{ buttonText }}</el-button>
     </div>
     <div class="canvas-area">
-      <canvas id="canvas" width="640" height="480"></canvas>
+      <canvas id="canvas" width="400" height="400"></canvas>
     </div>
     <el-dialog title="注册信息" :visible.sync="dialogVisible" width="80%" top="95px" center>
       <div v-if="isRegErr" class="regDialog">
@@ -39,6 +40,7 @@ export default {
       query: [],
       buttonText: "采集信息",
       dialogVisible: false,
+      imgUrl: require("../assets/img/photo.png"),
       errReg: "错误，没有学员信息",
       isRegErr: false,
       isSuccess: false,
@@ -66,7 +68,7 @@ export default {
         let video = document.getElementById("video");
         let canvas = document.getElementById("canvas");
         let ctx = canvas.getContext("2d");
-        ctx.drawImage(video, 0, 0);
+        ctx.drawImage(video, 120, 40, 400, 400, 0, 0, 400, 400);
 
         let image = canvas.toDataURL("image/jpg");
 
@@ -110,22 +112,6 @@ export default {
     }
   },
   mounted() {
-    let queryString = window.location.hash.split("?")[1].split("&");
-    let stringArr = [];
-
-    // queryString.map((item, index) => {
-    //   let parts = item.split("=");
-    //   stringArr[decodeURIComponent(parts[0])] =
-    //     decodeURIComponent(parts[1]) || "";
-    // });
-
-    queryString.map((item, index) => {
-      let parts = item.split("=")[1];
-      stringArr.push(parts)
-    });
-
-    this.query = stringArr;
-
     navigator.mediaDevices
       .getUserMedia(constraints)
       .then(mediaStream => {
@@ -138,6 +124,24 @@ export default {
       .catch(err => {
         console.log(err.name + ": " + err.message);
       });
+
+    let hash = window.location.hash.split("?")[1]
+    let queryString = [];
+
+    hash = hash ? hash.split("&") : []
+
+    // queryString.map((item, index) => {
+    //   let parts = item.split("=");
+    //   stringArr[decodeURIComponent(parts[0])] =
+    //     decodeURIComponent(parts[1]) || "";
+    // });
+
+    hash.map((item, index) => {
+      let parts = item.split("=")[1];
+      queryString.push(parts);
+    });
+
+    this.query = queryString;
   }
 };
 </script>
@@ -175,5 +179,17 @@ video {
 
 .canvas-area {
   display: none;
+}
+
+.cam-video{
+  position: relative;
+}
+
+.cam-video > img{
+  width: 400px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%)
 }
 </style>
