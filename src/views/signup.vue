@@ -174,7 +174,7 @@ export default {
     },
     doSign() {
       console.log("begin");
-      clearInterval(this.timer);
+      clearTimeout(this.timer);
 
       let video = document.getElementById("video");
       let canvas = document.getElementById("canvas");
