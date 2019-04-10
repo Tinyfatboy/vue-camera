@@ -50,8 +50,13 @@ export default {
   },
   methods: {
     snapshot() {
-      let featuresNo = this.query[0] || "";
-      let featuresType = this.query[1] || "";
+      // let featuresNo = this.query[0] || "";
+      // let featuresType = this.query[1] || "";
+
+      let featuresNo = this.featuresNo;
+      let featuresType = this.featuresType;
+
+      console.log(this.featuresNo, this.featuresType)
 
       if (featuresNo === "" || featuresType === "") {
         this.isRegErr = true;
@@ -111,6 +116,16 @@ export default {
       }
     }
   },
+  computed: {
+    featuresNo() {
+      const No = this.$route.query.fetureNO || ''
+      return No
+    },
+    featuresType() {
+      const type = this.$route.query.featureType || ''
+      return type
+    }
+  },
   mounted() {
     navigator.mediaDevices
       .getUserMedia(constraints)
@@ -125,23 +140,17 @@ export default {
         console.log(err.name + ": " + err.message);
       });
 
-    let hash = window.location.hash.split("?")[1]
-    let queryString = [];
+    // let hash = window.location.hash.split("?")[1]
+    // let queryString = [];
 
-    hash = hash ? hash.split("&") : []
+    // hash = hash ? hash.split("&") : []
 
-    // queryString.map((item, index) => {
-    //   let parts = item.split("=");
-    //   stringArr[decodeURIComponent(parts[0])] =
-    //     decodeURIComponent(parts[1]) || "";
+    // hash.map((item, index) => {
+    //   let parts = item.split("=")[1];
+    //   queryString.push(parts);
     // });
 
-    hash.map((item, index) => {
-      let parts = item.split("=")[1];
-      queryString.push(parts);
-    });
-
-    this.query = queryString;
+    // this.query = queryString;
   }
 };
 </script>
