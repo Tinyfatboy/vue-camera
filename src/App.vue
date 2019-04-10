@@ -26,7 +26,7 @@ export default {
   watch: {
     $route(to, from) {
       let path = to.path;
-      if (path === "/successInfo" || path === "/register") {
+      if (path === "/successInfo" || path === "/register" || path === "/registerSuccess") {
         this.isShow = false;
       } else {
         this.isShow = true;
@@ -35,7 +35,7 @@ export default {
   },
   mounted() {
     let path = this.$route.path;
-    if (path === "/successInfo" || path === "/register") {
+    if (path === "/successInfo" || path === "/register" || path === "/registerSuccess") {
       this.isShow = false;
     } else {
       this.isShow = true;

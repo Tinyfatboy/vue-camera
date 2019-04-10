@@ -2,143 +2,144 @@
     background: url(../img/BK.png) no-repeat;
     background-size: 100% 100%;
 }
-
 .timImg {
-    width: 12rem;
+    width: 248px;
     /* height: 12rem; */
     margin: auto;
-    margin-top: 5rem;
     text-align: center;
-    font-size: 1rem;
+    font-size: 1.5rem;
     font-weight: 700;
     font-stretch: normal;
     letter-spacing: 0rem;
     color: #000000;
-}
-.timImg > .clock{
-    height: 12rem;
-    background-image: url("../img/clock.png");
-    background-size: 100%;
-    background-repeat: no-repeat;
     position: relative;
+    top: 5.6rem;
+    line-height: 2rem;
 }
-.clock > div{
-    background-size: 100%;
-    background-repeat: no-repeat;
-    background-position: center;
-    height: 100px;
-    width: 100px;
-    position: absolute;
-    top: 42px;
-    left: 45px;
+.date,
+.week{
+    position: relative;
+    top: 1rem;
 }
-.clock > .hourHand{
-    background-image: url("../img/hours.png");
-    z-index: 1;
-}
-.clock > .minuteHand{
-    background-image: url("../img/minutes.png");
-    z-index: 2;
+.content_top{
+    height: 33.2rem;
 }
 .signIn {
     position: absolute;
-    width: 12rem;
-    height: 4rem;
+    width: 15rem;
+    height: 5rem;
     top: 5rem;
     right: 2rem;
     cursor: pointer;
 }
 
 .tableBk {
-    width: 39rem;
     margin: auto;
-    margin-top: 2rem;
     text-align: center;
     border-bottom: 8px solid #ffb085;
+    height: 14rem;
+    overflow: hidden;
+    background: #fff;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
 }
 
 .titleBk {
     background: #ff5a00;
     width: 100%;
-    height: 4rem;
-    border-top-left-radius: 1rem;
-    border-top-right-radius: 1rem;
-	font-size: 2rem;
+    /* height: 4rem; */
+    height: 3.1rem;
+	font-size: 1.4rem;
 	font-weight: normal;
 	font-stretch: normal;
-	line-height: 4rem;
+	line-height: 3.1rem;
 	letter-spacing: 0rem;
 	color: #ffffff;
 }
 .contenBK{
     width: 100%;
     background: #ffffff;
-    font-size: 1.2rem;
+    /* font-size: 1.2rem; */
+    font-size: 1.1rem;
 	font-weight: normal;
 	font-stretch: normal;
-	line-height: 2.8rem;
-    letter-spacing: 0rem;
+	letter-spacing: 0rem;
     color: #333333;
-}
-.table-head > .contenBK{
-    padding-bottom: 0;
-}
-.table-body{
-    height: 9rem;
-    overflow-y: scroll;
     padding-bottom: 1rem;
 }
-.table-wrapper{
-    background: #ffffff;
-}
-.no-class{
+.noClass{
     text-align: center;
     font-size: 1.5rem;
-    line-height: 9rem;
-    height: 9rem;
-    padding-bottom: 1rem;
+    line-height: 8rem;
+    height: 8rem;
+}
+.contentBk_right{
+    width: 26.3rem;
+	height: 4.8rem;
+	font-family: MicrosoftYaHei;
+	font-size: 1.1rem;
+	font-weight: normal;
+	font-stretch: normal;
+	line-height: 2.6rem;
+	letter-spacing: 0rem;
+	color: #666666;
+}
+.contenBK td{
+    height: 1.7rem;
+    line-height: 1.7rem;
 }
 p.contenBK{
     width: calc(100% - 2rem);
-    padding: 1rem;
-    line-height: 2rem;
-    margin: 0;
+    padding: 0.6rem;
+    margin: 0 auto;
+    line-height: 1.8rem;
     text-align: left;
 }
 .flexBk{
-    display: flex;
-    justify-content:space-around;
     background: #ffffff;
     padding-bottom: 1rem;
     border: 0;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content:space-between;
+    padding: 0 20px;
 }
 .flexBk div{
-    width: 12rem;
-    height: 9rem;
-    background: #b2b2b2;
+    width: 7.8rem;
+    height: 4.2rem;
+	background-color: #cecece;
+	border: 0.1rem solid  #b2b2b2;
 }
 .videoBk{
-    width: 39rem;
-    height: 19rem;
-    margin: auto;
-    margin-top: 2rem;
-    text-align: center;
-    border-radius: 1rem;
-    background: #ff5a00;
+    width: 58.6rem;
+    height: 62rem;
+	background-color: #ff5a00;
+    border-radius: 0.9rem;
     position: relative;
+    margin: 0 auto;
+    padding: 2rem;
 }
 .videoBkCont{
-    width: 90%;
-    height: 90%;
+    width: 100%;
+    height: 100%;
     background: #ffffff;
-    position: absolute;
-    top: 5%;
-    left: 5%;
+    overflow: hidden;
 }
-
-.videoBkCont > img{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+.content_center{
+    padding: 0 42px;
+    overflow: hidden;
+    margin-bottom: 1.9rem;
+}
+.tableBk_1{
+    /* width: 445px; */
+    width: 29.1rem;
+    float: left;
+}
+.tableBk_2{
+    /* width:517px; */
+    width: 28.2rem;
+    float: right;
+}
+.canvasArea{
+    display: none;
 }

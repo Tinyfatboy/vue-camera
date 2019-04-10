@@ -80,10 +80,13 @@ a:hover {
     position: relative;
 }
 
-.dialog{
-    height: 400px;
+.el-dialog > div:first-child > span{
     font-size: 2rem;
-    line-height: 3rem;
+}
+
+.dialog{
+    height: 33.3vh;
+    font-size: 2.5rem;
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -92,5 +95,5 @@ a:hover {
 }
 
 .dialog > span:last-child{
-    margin-top: 100px;
+    margin-top: 8vh;
 }

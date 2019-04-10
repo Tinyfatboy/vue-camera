@@ -6,7 +6,6 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     // description: "",
-    // classSchedule: [],
     successUrl: ""
   },
   // getters: {
@@ -17,9 +16,6 @@ export default new Vuex.Store({
   mutations: {
     // login(state, data) {
     //   state.description = data
-    // },
-    // class(state, data) {
-    //   state.classSchedule = data
     // },
     successLogin(state, data) {
       state.successUrl = data

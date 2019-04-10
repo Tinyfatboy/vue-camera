@@ -17,6 +17,15 @@ export default {
     })
   },
 
+  regSucess(featureNo, featureType){
+    return axios.get('face/enable', {
+      params: {
+        featureNo,
+        featureType
+      }
+    })
+  },
+
   getInfo() {
     return axios.post('ins_index')
   },

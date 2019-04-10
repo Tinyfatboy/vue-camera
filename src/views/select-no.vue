@@ -8,11 +8,11 @@
     <div class="redSignIn" @click="submit">
       <span>签到</span>
     </div>
-    <el-dialog title="学员信息" :visible.sync="dialogVisible" width="80%" top="420px" center>
+    <el-dialog title="学员信息" :visible.sync="dialogVisible" width="80%" :top="dialogTop" center>
       <div class="dialog">
-        <span v-if="isFound">{{successInfo}}</span>
+        <span v-if="isFound">已成功获取学员信息</span>
         <span v-if="!isFound">{{errorInfo}}</span>
-        <span>正在跳转回主页面</span>
+        <span>正在跳转回主页面...</span>
       </div>
     </el-dialog>
   </div>
@@ -28,7 +28,6 @@ export default {
       featuresNo: "",
       dialogVisible: false,
       isFound: false,
-      successInfo: "成功获取学员信息",
       errorInfo: "暂无匹配学员信息"
     };
   },
@@ -44,18 +43,31 @@ export default {
           console.log(res);
           let status = res.data.status;
           if (status === "1") {
-            this.isFound = true
+            this.isFound = true;
           } else {
-            this.isFound = false
+            this.isFound = false;
+            this.errorInfo = "暂无匹配学员信息";
           }
-          this.dialogVisible = true
+          this.dialogVisible = true;
           setTimeout(() => {
             this.$router.push("/signup");
           }, 3000);
         })
         .catch(err => {
+          this.isFound = false;
+          this.errorInfo = "后端接口错误，请检查";
+          this.dialogVisible = true;
+          setTimeout(() => {
+            this.$router.push("/signup");
+          }, 3000);
           console.log(err);
         });
+    }
+  },
+  computed: {
+    dialogTop() {
+      const height = window.innerHeight;
+      return `${height * 0.3}px`;
     }
   },
   mounted() {}
@@ -64,17 +76,4 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.activeInfo{
-  height: 400px;
-  font-size: 2rem;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.activeInfo > span:last-child{
-  margin-top: 100px;
-}
 </style>
