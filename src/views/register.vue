@@ -2,13 +2,13 @@
   <div class="reg">
     <div class="cam-video">
       <video id="video" width="640" height="480" autoplay></video>
-      <img :src="imgUrl" width="270px" alt="">
+      <img :src="imgUrl" height="480px" alt="">
     </div>
     <div class="function-area">
       <el-button type="primary" size="medium" @click="snapshot">{{ buttonText }}</el-button>
     </div>
     <div class="canvas-area">
-      <canvas id="canvas" width="400" height="400"></canvas>
+      <canvas id="canvas" width="640" height="480"></canvas>
     </div>
     <el-dialog title="注册信息" :visible.sync="dialogVisible" width="80%" top="95px" center>
       <div v-if="isRegErr" class="regDialog">
@@ -40,7 +40,7 @@ export default {
       query: [],
       buttonText: "采集信息",
       dialogVisible: false,
-      imgUrl: require("../assets/img/photo.png"),
+      imgUrl: require("../assets/img/faceframe.png"),
       errReg: "错误，没有学员信息",
       isRegErr: false,
       isSuccess: false,
@@ -55,8 +55,6 @@ export default {
 
       let featuresNo = this.featuresNo;
       let featuresType = this.featuresType;
-
-      console.log(this.featuresNo, this.featuresType)
 
       if (featuresNo === "" || featuresType === "") {
         this.isRegErr = true;
@@ -73,7 +71,7 @@ export default {
         let video = document.getElementById("video");
         let canvas = document.getElementById("canvas");
         let ctx = canvas.getContext("2d");
-        ctx.drawImage(video, 120, 40, 400, 400, 0, 0, 400, 400);
+        ctx.drawImage(video, 0, 0);
 
         let image = canvas.toDataURL("image/jpg");
 
@@ -195,10 +193,9 @@ video {
 }
 
 .cam-video > img{
-  width: 400px;
   position: absolute;
   left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%)
+  top: 0;
+  transform: translateX(-50%);
 }
 </style>
